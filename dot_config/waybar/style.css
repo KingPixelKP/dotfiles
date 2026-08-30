@@ -11,18 +11,11 @@ window#waybar {
 #clock,
 #pulseaudio,
 #backlight,
-#battery {
-    background: rgba(20, 20, 25, 0.82);
-    padding: 3px 10px;
-    margin: 5px 2px;
-    border-radius: 8px;
-}
-
-/* Workspaces */
+#battery,
 #workspaces {
     background: rgba(20, 20, 25, 0.82);
-    padding: 3px 6px;
-    margin: 5px 2px;
+    padding: 1px 8px;
+    margin: 3px 2px;
     border-radius: 8px;
 }
 
