@@ -1,0 +1,9 @@
+[Default Applications]
+text/x-java=code.desktop
+text/x-maven+xml=code.desktop
+text/plain=code.desktop
+
+[Added Associations]
+text/x-java=code.desktop;
+text/x-maven+xml=code.desktop;
+text/plain=code.desktop;
