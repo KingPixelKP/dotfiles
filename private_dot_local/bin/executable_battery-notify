@@ -1,0 +1,25 @@
+#!/bin/bash
+
+LOW=20
+CRITICAL=10
+
+while true; do
+  capacity=$(cat /sys/class/power_supply/BAT*/capacity)
+  status=$(cat /sys/class/power_supply/BAT*/status)
+
+  if [[ "$status" == "Discharging" ]]; then
+    if ((capacity <= CRITICAL)); then
+      notify-send -u critical \
+        "Battery critical" \
+        "Battery is at ${capacity}%"
+      sleep 300
+    elif ((capacity <= LOW)); then
+      notify-send -u normal \
+        "Low battery" \
+        "Battery is at ${capacity}%"
+      sleep 600
+    fi
+  fi
+
+  sleep 30
+done
