@@ -49,7 +49,6 @@ hl.on("hyprland.start", function()
 	--   hl.exec_cmd(terminal)
 	--   hl.exec_cmd("nm-applet")
 	hl.exec_cmd("waybar & hyprpaper & firefox")
-	hl.exec_cmd("mako & battery-notify")
 end)
 
 -------------------------------
@@ -60,7 +59,8 @@ end)
 
 hl.env("XCURSOR_PATH", "/home/kpgm/.local/share/icons:/usr/share/icons")
 hl.env("XCURSOR_THEME", "pixloen Agnes Tachyon Linux XCursor")
-hl.env("XCURSOR_SIZE", "8")
+hl.env("XCURSOR_SIZE", "12")
+hl.env("HYPRCURSOR_SIZE", "12")
 
 -----------------------
 ----- PERMISSIONS -----
@@ -266,7 +266,8 @@ hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
-hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())-- Screenshots
+hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
+-- Screenshots
 hl.bind(mainMod .. " + CTRL + 1", hl.dsp.exec_cmd("hyprshot -m output"))
 hl.bind(mainMod .. " + CTRL + 2", hl.dsp.exec_cmd("hyprshot -m region"))
 hl.bind(mainMod .. " + CTRL + 3", hl.dsp.exec_cmd("hyprshot -m window"))
