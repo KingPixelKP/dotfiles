@@ -17,15 +17,6 @@ if command -q bat
     set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
 end
 
-# Replace ls with eza when installed.
-if command -q eza
-    alias ls='eza -al --color=auto --group-directories-first'
-    alias la='eza -a --color=auto --group-directories-first'
-    alias ll='eza -l --color=auto --group-directories-first'
-    alias lt='eza -aT --color=auto --group-directories-first'
-    alias 'l.'="eza -a | grep -E '^\\.'"
-end
-
 # Interactive command-line shortcuts.
 if status is-interactive
     if test "$fish_key_bindings" = fish_vi_key_bindings
