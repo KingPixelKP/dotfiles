@@ -6,7 +6,7 @@ if test -f "$HOME/.fish_profile"
 end
 
 # Common executable directories.
-fish_add_path "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/Applications/depot_tools"
+fish_add_path "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/Applications/depot_tools" "$HOME/bin"
 
 # Docker normally defaults to /var/run/docker.sock; set DOCKER_HOST only
 # if you need to override that default.
