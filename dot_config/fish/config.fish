@@ -61,3 +61,5 @@ alias jctl='journalctl -p 3 -xb'
 alias tb='nc termbin.com 9999'
 
 set -gx DOCKER_HOST unix:///var/run/docker.sock
+
+source "$HOME/.config/fish/keybinds.fish"
