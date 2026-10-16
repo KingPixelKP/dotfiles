@@ -11,12 +11,6 @@ fish_add_path "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/Applications/depot_to
 # Docker normally defaults to /var/run/docker.sock; set DOCKER_HOST only
 # if you need to override that default.
 
-# Format man pages with bat when available.
-if command -q bat
-    set -gx MANROFFOPT "-c"
-    set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
-end
-
 # Interactive command-line shortcuts.
 if status is-interactive
     if test "$fish_key_bindings" = fish_vi_key_bindings
@@ -26,6 +20,11 @@ if status is-interactive
         bind ! __history_previous_command
         bind '$' __history_previous_command_arguments
     end
+    
+    if command -q starship
+        starship init fish | source
+    end
+
 end
 
 # Navigation.

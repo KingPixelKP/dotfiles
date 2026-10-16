@@ -3,12 +3,36 @@
 # Install useful command-line tools on Arch-based or Debian-based systems.
 set -Eeuo pipefail
 
-ARCH_PACKAGES=(eza bat fzf ripgrep fd zoxide btop)
+ARCH_PACKAGES=(eza bat fzf ripgrep fd zoxide btop starship ttf-jetbrains-mono-nerd)
 DEBIAN_PACKAGES=(eza bat fzf ripgrep fd-find zoxide btop)
+DEBIAN_URLS=(
+    "https://starship.rs/install.sh"
+)
 
 fail() {
     printf 'Error: %s\n' "$*" >&2
     exit 1
+}
+
+install_jetbrains_mono_nerd_font() {
+    local fontdir="$HOME/.local/share/fonts/JetBrainsMonoNerdFont"
+    local archive="/tmp/JetBrainsMono.tar.xz"
+
+    mkdir -p "$fontdir" || return 1
+
+    echo "Downloading JetBrainsMono Nerd Font..."
+    curl -fL \
+        https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz \
+        -o "$archive" || return 1
+
+    tar -xf "$archive" -C "$fontdir" || return 1
+
+    if command -v fc-cache >/dev/null 2>&1; then
+        fc-cache -f "$fontdir"
+    fi
+
+    rm -f "$archive"
+    echo "JetBrainsMono Nerd Font installed."
 }
 
 if [[ ! -r /etc/os-release ]]; then
@@ -49,6 +73,14 @@ case "$DISTRO_ID" in
                 missing+=("$package")
             fi
         done
+        for url in "${DEBIAN_URLS[@]}"; do
+            printf 'Installing from URL: %s\n' "$url"
+            curl -fsSL "$url" | "${SUDO[@]}" sh
+        done
+
+        #Install jetbrains mono nerd font
+        install_jetbrains_mono_nerd_font
+
 
         ((${#available[@]} > 0)) || fail 'None of the requested packages were found in the enabled APT repositories.'
         printf 'Installing available packages: %s\n' "${available[*]}"
