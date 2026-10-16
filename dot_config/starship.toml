@@ -1,5 +1,5 @@
 format = """
-$os $time $user@$host $directory$git_branch$git_status
+format = "$os $time $user@$host $directory$git_branch$git_status$character"
 $character"""
 
 [os]
@@ -37,9 +37,11 @@ success_symbol = "[❯](bold green)"
 error_symbol = "[❯](bold red)"
 
 [user]
-format = "[$USER]($style) "
+show_always = true
+format = "[$user]($style) "
 style = "bold cyan"
 
 [host]
+ssh_only = false
 format = "[$hostname]($style) "
 style = "bold yellow"
