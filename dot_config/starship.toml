@@ -1,5 +1,5 @@
 format = """
-$os $time $username@$hostname $directory$git_branch$git_status$character
+$os $time $username@$hostname $directory$git_branch$git_status
 $character"""
 
 [os]
