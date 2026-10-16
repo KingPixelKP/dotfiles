@@ -37,7 +37,7 @@ success_symbol = "[❯](bold green)"
 error_symbol = "[❯](bold red)"
 
 [user]
-format = "[$user]($style) "
+format = "[$USER]($style) "
 style = "bold cyan"
 
 [host]
