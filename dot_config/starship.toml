@@ -1,0 +1,37 @@
+format = """
+$os $time $directory$git_branch$git_status
+$character"""
+
+[os]
+disabled = false
+format = "[$symbol]($style) "
+
+[os.symbols]
+Arch = ""
+Ubuntu = ""
+Debian = ""
+
+[time]
+disabled = false
+format = "[$time]($style) "
+time_format = "%d %b %H:%M"
+style = "dimmed white"
+
+[directory]
+format = "[ $path]($style) "
+style = "bold blue"
+truncation_length = 3
+truncate_to_repo = true
+
+[git_branch]
+symbol = " "
+format = "[$symbol$branch]($style) "
+style = "bold purple"
+
+[git_status]
+style = "bold red"
+format = "([$all_status$ahead_behind]($style) )"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
