@@ -1,5 +1,5 @@
 format = """
-format = "$os $time $user@$host $directory$git_branch$git_status$character"
+$os $time $username@$hostname $directory$git_branch$git_status$character
 $character"""
 
 [os]
@@ -36,12 +36,12 @@ format = "([$all_status$ahead_behind]($style) )"
 success_symbol = "[❯](bold green)"
 error_symbol = "[❯](bold red)"
 
-[user]
+[username]
 show_always = true
-format = "[$user]($style) "
-style = "bold cyan"
+format = "[$user]($style)"
+style_user = "bold cyan"
 
-[host]
+[hostname]
 ssh_only = false
-format = "[$hostname]($style) "
+format = "[$hostname]($style)"
 style = "bold yellow"
