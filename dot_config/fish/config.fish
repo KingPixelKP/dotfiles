@@ -1,8 +1,14 @@
 # Personal Fish configuration shared across Linux distributions.
 
+set -g fish_greeting ""
+
 # Apply Fish-compatible profile settings.
 if test -f "$HOME/.fish_profile"
     source "$HOME/.fish_profile"
+end
+
+if command -q fastfetch
+    fastfetch 
 end
 
 # Common executable directories.
@@ -20,7 +26,7 @@ if status is-interactive
         bind ! __history_previous_command
         bind '$' __history_previous_command_arguments
     end
-    
+
     if command -q starship
         starship init fish | source
     end
