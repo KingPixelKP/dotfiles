@@ -1,7 +1,7 @@
 # CachyOS-only Fish configuration.
 # This file is safe to deploy to other Linux machines.
 
-if not test -f /etc/cachyos-release
+if not test -d /etc/cachyos
     return
 end
 

@@ -7,10 +7,6 @@ if test -f "$HOME/.fish_profile"
     source "$HOME/.fish_profile"
 end
 
-if command -q fastfetch
-    fastfetch 
-end
-
 # Common executable directories.
 fish_add_path "$HOME/.local/bin" "$HOME/.cargo/bin" "$HOME/Applications/depot_tools" "$HOME/bin"
 
