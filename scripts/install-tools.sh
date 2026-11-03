@@ -6,16 +6,37 @@ set -Eeuo pipefail
 ARCH_PACKAGES=(eza bat fzf ripgrep fd zoxide btop starship ttf-jetbrains-mono-nerd)
 DEBIAN_PACKAGES=(eza bat fzf ripgrep fd-find zoxide btop)
 DEBIAN_URLS=(
-  "https://starship.rs/install.sh"
+    "https://starship.rs/install.sh"
 )
 
 fail() {
-  printf 'Error: %s\n' "$*" >&2
-  exit 1
+    printf 'Error: %s\n' "$*" >&2
+    exit 1
+}
+
+install_jetbrains_mono_nerd_font() {
+    local fontdir="$HOME/.local/share/fonts/JetBrainsMonoNerdFont"
+    local archive="/tmp/JetBrainsMono.tar.xz"
+
+    mkdir -p "$fontdir" || return 1
+
+    echo "Downloading JetBrainsMono Nerd Font..."
+    curl -fL \
+        https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.tar.xz \
+        -o "$archive" || return 1
+
+    tar -xf "$archive" -C "$fontdir" || return 1
+
+    if command -v fc-cache >/dev/null 2>&1; then
+        fc-cache -f "$fontdir"
+    fi
+
+    rm -f "$archive"
+    echo "JetBrainsMono Nerd Font installed."
 }
 
 if [[ ! -r /etc/os-release ]]; then
-  fail 'Cannot identify this distribution: /etc/os-release is missing.'
+    fail 'Cannot identify this distribution: /etc/os-release is missing.'
 fi
 
 # shellcheck disable=SC1091
@@ -23,85 +44,89 @@ source /etc/os-release
 DISTRO_ID="${ID,,}"
 DISTRO_LIKE="${ID_LIKE,,}"
 
-if ((EUID == 0)); then
-  SUDO=()
+if (( EUID == 0 )); then
+    SUDO=()
 elif command -v sudo >/dev/null 2>&1; then
-  SUDO=(sudo)
+    SUDO=(sudo)
 else
-  fail 'Run as root or install sudo first.'
+    fail 'Run as root or install sudo first.'
 fi
 
 case "$DISTRO_ID" in
-arch | cachyos | manjaro | endeavouros)
-  printf 'Updating system and installing: %s\n' "${ARCH_PACKAGES[*]}"
-  "${SUDO[@]}" pacman -Syu --needed -- "${ARCH_PACKAGES[@]}"
-  ;;
-debian | ubuntu | linuxmint | pop)
-  printf 'Updating package lists...\n'
-  "${SUDO[@]}" apt-get update
+    arch|cachyos|manjaro|endeavouros)
+        printf 'Updating system and installing: %s\n' "${ARCH_PACKAGES[*]}"
+        "${SUDO[@]}" pacman -Syu --needed -- "${ARCH_PACKAGES[@]}"
+        ;;
+    debian|ubuntu|linuxmint|pop)
+        printf 'Updating package lists...\n'
+        "${SUDO[@]}" apt-get update
 
-  # A few packages (notably eza and zoxide on older releases) may be
-  # absent from the enabled repositories. Install available packages
-  # and clearly report anything that needs a separate installation.
-  available=()
-  missing=()
-  for package in "${DEBIAN_PACKAGES[@]}"; do
-    if apt-cache show "$package" >/dev/null 2>&1; then
-      available+=("$package")
-    else
-      missing+=("$package")
-    fi
-  done
-  for url in "${DEBIAN_URLS[@]}"; do
-    printf 'Installing from URL: %s\n' "$url"
-    curl -fsSL "$url" | "${SUDO[@]}" sh
-  done
+        # A few packages (notably eza and zoxide on older releases) may be
+        # absent from the enabled repositories. Install available packages
+        # and clearly report anything that needs a separate installation.
+        available=()
+        missing=()
+        for package in "${DEBIAN_PACKAGES[@]}"; do
+            if apt-cache show "$package" >/dev/null 2>&1; then
+                available+=("$package")
+            else
+                missing+=("$package")
+            fi
+        done
+        for url in "${DEBIAN_URLS[@]}"; do
+            printf 'Installing from URL: %s\n' "$url"
+            curl -fsSL "$url" | "${SUDO[@]}" sh
+        done
 
-  ((${#available[@]} > 0)) || fail 'None of the requested packages were found in the enabled APT repositories.'
-  printf 'Installing available packages: %s\n' "${available[*]}"
-  "${SUDO[@]}" apt-get install -y --no-install-recommends "${available[@]}"
+        #Install jetbrains mono nerd font
+        install_jetbrains_mono_nerd_font
 
-  if ((${#missing[@]} > 0)); then
-    printf '\nWarning: these packages were not found in enabled APT repositories: %s\n' "${missing[*]}" >&2
-    printf 'You may need a newer release or an additional trusted repository.\n' >&2
-  fi
 
-  if command -v batcat >/dev/null 2>&1 && ! command -v bat >/dev/null 2>&1; then
-    printf '\nNote: this system uses `batcat` as the executable name for bat.\n'
-  fi
-  if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then
-    printf 'Note: this system uses `fdfind` as the executable name for fd-find.\n'
-  fi
-  ;;
-*)
-  case " $DISTRO_LIKE " in
-  *' arch '*)
-    printf 'Detected Arch-based distribution: %s\n' "${PRETTY_NAME:-$DISTRO_ID}"
-    "${SUDO[@]}" pacman -Syu --needed -- "${ARCH_PACKAGES[@]}"
-    ;;
-  *' debian '* | *' ubuntu '*)
-    printf 'Detected Debian-based distribution: %s\n' "${PRETTY_NAME:-$DISTRO_ID}"
-    "${SUDO[@]}" apt-get update
-    available=()
-    missing=()
-    for package in "${DEBIAN_PACKAGES[@]}"; do
-      if apt-cache show "$package" >/dev/null 2>&1; then
-        available+=("$package")
-      else
-        missing+=("$package")
-      fi
-    done
-    ((${#available[@]} > 0)) || fail 'None of the requested packages were found in the enabled APT repositories.'
-    "${SUDO[@]}" apt-get install -y --no-install-recommends "${available[@]}"
-    if ((${#missing[@]} > 0)); then
-      printf 'Warning: packages not found in enabled APT repositories: %s\n' "${missing[*]}" >&2
-    fi
-    ;;
-  *)
-    fail "Unsupported distribution: ${PRETTY_NAME:-$DISTRO_ID}. Supported families: Arch and Debian/Ubuntu."
-    ;;
-  esac
-  ;;
+        ((${#available[@]} > 0)) || fail 'None of the requested packages were found in the enabled APT repositories.'
+        printf 'Installing available packages: %s\n' "${available[*]}"
+        "${SUDO[@]}" apt-get install -y --no-install-recommends "${available[@]}"
+
+        if ((${#missing[@]} > 0)); then
+            printf '\nWarning: these packages were not found in enabled APT repositories: %s\n' "${missing[*]}" >&2
+            printf 'You may need a newer release or an additional trusted repository.\n' >&2
+        fi
+
+        if command -v batcat >/dev/null 2>&1 && ! command -v bat >/dev/null 2>&1; then
+            printf '\nNote: this system uses `batcat` as the executable name for bat.\n'
+        fi
+        if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then
+            printf 'Note: this system uses `fdfind` as the executable name for fd-find.\n'
+        fi
+        ;;
+    *)
+        case " $DISTRO_LIKE " in
+            *' arch '*)
+                printf 'Detected Arch-based distribution: %s\n' "${PRETTY_NAME:-$DISTRO_ID}"
+                "${SUDO[@]}" pacman -Syu --needed -- "${ARCH_PACKAGES[@]}"
+                ;;
+            *' debian '*|*' ubuntu '*)
+                printf 'Detected Debian-based distribution: %s\n' "${PRETTY_NAME:-$DISTRO_ID}"
+                "${SUDO[@]}" apt-get update
+                available=()
+                missing=()
+                for package in "${DEBIAN_PACKAGES[@]}"; do
+                    if apt-cache show "$package" >/dev/null 2>&1; then
+                        available+=("$package")
+                    else
+                        missing+=("$package")
+                    fi
+                done
+                ((${#available[@]} > 0)) || fail 'None of the requested packages were found in the enabled APT repositories.'
+                "${SUDO[@]}" apt-get install -y --no-install-recommends "${available[@]}"
+                if ((${#missing[@]} > 0)); then
+                    printf 'Warning: packages not found in enabled APT repositories: %s\n' "${missing[*]}" >&2
+                fi
+                ;;
+            *)
+                fail "Unsupported distribution: ${PRETTY_NAME:-$DISTRO_ID}. Supported families: Arch and Debian/Ubuntu."
+                ;;
+        esac
+        ;;
 esac
 
 printf '\nFinished. Check tool availability with: eza --version, bat --version, fzf --version, rg --version\n'
