@@ -47,9 +47,11 @@ alias vdir='vdir --color=auto'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias zed='zeditor'
 
 # General system diagnostics.
 alias jctl='journalctl -p 3 -xb'
 alias tb='nc termbin.com 9999'
 
 set -gx DOCKER_HOST unix:///var/run/docker.sock
+direnv hook fish | source

@@ -57,10 +57,7 @@ end)
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
-hl.env("XCURSOR_PATH", "/home/kpgm/.local/share/icons:/usr/share/icons")
-hl.env("XCURSOR_THEME", "pixloen Agnes Tachyon Linux XCursor")
-hl.env("XCURSOR_SIZE", "12")
-hl.env("HYPRCURSOR_SIZE", "12")
+hl.env("XCURSOR_THEME", "agnes-tachyon")
 
 -----------------------
 ----- PERMISSIONS -----
@@ -109,7 +106,7 @@ hl.config({
 		rounding_power = 10,
 
 		-- Change transparency of focused and unfocused windows
-		active_opacity = 0.9,
+		active_opacity = 0.95,
 		inactive_opacity = 0.7,
 
 		shadow = {

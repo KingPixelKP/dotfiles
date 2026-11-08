@@ -3,8 +3,16 @@ text/x-java=code.desktop
 text/x-maven+xml=code.desktop
 text/plain=code.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
+text/markdown=dev.zed.Zed.desktop
+application/toml=dev.zed.Zed.desktop
+application/json=dev.zed.Zed.desktop
+text/x-scheme=dev.zed.Zed.desktop
 
 [Added Associations]
 text/x-java=code.desktop;
 text/x-maven+xml=code.desktop;
 text/plain=code.desktop;
+text/markdown=dev.zed.Zed.desktop;
+application/toml=dev.zed.Zed.desktop;
+application/json=dev.zed.Zed.desktop;
+text/x-scheme=dev.zed.Zed.desktop;
