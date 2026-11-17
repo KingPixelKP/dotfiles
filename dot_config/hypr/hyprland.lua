@@ -48,7 +48,7 @@ local browser = "firefox"
 hl.on("hyprland.start", function()
 	--   hl.exec_cmd(terminal)
 	--   hl.exec_cmd("nm-applet")
-	hl.exec_cmd("waybar & hyprpaper & firefox & ~/.config/hypr/scripts/wallpaper-carousel.sh && battery-notify")
+	hl.exec_cmd("waybar & hyprpaper & firefox & ~/.config/hypr/scripts/wallpaper-carousel.sh & battery-notify")
 end)
 
 -------------------------------
@@ -108,7 +108,7 @@ hl.config({
 
 		-- Change transparency of focused and unfocused windows
 		active_opacity = 1.0,
-		inactive_opacity = 0.7,
+		inactive_opacity = 0.95,
 
 		shadow = {
 			enabled = false,
@@ -270,6 +270,7 @@ hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 -- Screenshots
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("~/.config/hypr/scripts/wallpaper-toggle.sh"))
 hl.bind(mainMod .. " + CTRL + 1", hl.dsp.exec_cmd("hyprshot -m output"))
 hl.bind(mainMod .. " + CTRL + 2", hl.dsp.exec_cmd("hyprshot -m region"))
 hl.bind(mainMod .. " + CTRL + 3", hl.dsp.exec_cmd("hyprshot -m window"))
