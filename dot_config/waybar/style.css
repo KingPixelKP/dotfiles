@@ -5,7 +5,8 @@
 }
 
 window#waybar {
-    background: transparent;
+    background: rgba(20, 20, 25, 1); /* Solid bar background */
+    color: #cdd6f4;
 }
 
 #clock,
@@ -13,10 +14,10 @@ window#waybar {
 #backlight,
 #battery,
 #workspaces {
-    background: rgba(20, 20, 25, 0.82);
-    padding: 1px 8px;
-    margin: 3px 2px;
-    border-radius: 8px;
+    background: transparent; /* Let the main bar background show through */
+    padding: 2px 10px;
+    margin: 0; /* Removes the gap between the bar and windows */
+    border-radius: 0; /* Removes rounded corners */
 }
 
 #workspaces button {
@@ -25,7 +26,7 @@ window#waybar {
     border: none;
     padding: 0 7px;
     margin: 0;
-    border-radius: 6px;
+    border-radius: 0;
     box-shadow: none;
 }
 
@@ -36,14 +37,6 @@ window#waybar {
 #workspaces button.active {
     background: rgba(255, 255, 255, 0.14);
     color: #ffffff;
-}
-
-#pulseaudio {
-    margin-left: 2px;
-}
-
-#battery {
-    margin-right: 8px;
 }
 
 #battery.warning,
