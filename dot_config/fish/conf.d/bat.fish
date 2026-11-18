@@ -6,7 +6,10 @@ else if command -q batcat
 end
 
 # Format man pages with bat when available.
-if command -q bat || command -q batcat
+if command -q bat
     set -gx MANROFFOPT "-c"
     set -gx MANPAGER "sh -c 'col -bx | bat -l man -p'"
+else if command -q batcat
+    set -gx MANROFFOPT "-c"
+    set -gx MANPAGER "sh -c 'col -bx | batcat -l man -p'"
 end
