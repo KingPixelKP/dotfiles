@@ -48,7 +48,7 @@ local browser = "firefox"
 hl.on("hyprland.start", function()
 	--   hl.exec_cmd(terminal)
 	--   hl.exec_cmd("nm-applet")
-	hl.exec_cmd("waybar & hyprpaper & firefox && battery-notify")
+	hl.exec_cmd("waybar & hyprpaper & firefox & ~/.config/hypr/scripts/wallpaper-carousel.sh & battery-notify")
 end)
 
 -------------------------------
@@ -57,10 +57,7 @@ end)
 
 -- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Environment-variables/
 
-hl.env("XCURSOR_PATH", "/home/kpgm/.local/share/icons:/usr/share/icons")
-hl.env("XCURSOR_THEME", "pixloen Agnes Tachyon Linux XCursor")
-hl.env("XCURSOR_SIZE", "12")
-hl.env("HYPRCURSOR_SIZE", "12")
+hl.env("XCURSOR_THEME", "agnes-tachyon")
 
 -----------------------
 ----- PERMISSIONS -----
@@ -87,8 +84,9 @@ hl.env("HYPRCURSOR_SIZE", "12")
 -- Refer to https://wiki.hypr.land/Configuring/Basics/Variables/
 hl.config({
 	general = {
-		gaps_in = 1,
-		gaps_out = 0,
+		gaps_in = 0,
+        gaps_out = 0,
+        border_size = 0,
 
 		col = {
 			active_border = { colors = { "rgba(33ccffee)", "rgba(00ff99ee)" }, angle = 45 },
@@ -105,12 +103,12 @@ hl.config({
 	},
 
 	decoration = {
-		rounding = 5,
+		rounding = 0,
 		rounding_power = 10,
 
 		-- Change transparency of focused and unfocused windows
-		active_opacity = 0.9,
-		inactive_opacity = 0.7,
+		active_opacity = 1.0,
+		inactive_opacity = 0.95,
 
 		shadow = {
 			enabled = false,
@@ -205,8 +203,12 @@ hl.config({
 
 hl.config({
 	misc = {
-		force_default_wallpaper = -1, -- Set to 0 or 1 to disable the anime mascot wallpapers
-		disable_hyprland_logo = false, -- If true disables the random hyprland logo / anime girl background. :(
+		--force_default_wallpaper = -1, -- Set to 0 or 1 to disable the anime mascot wallpapers
+		--disable_hyprland_logo = false, -- If true disables the random hyprland logo / anime girl background. :(
+
+		force_default_wallpaper = 0,
+		disable_hyprland_logo = true,
+		disable_splash_rendering = true,
 	},
 })
 
@@ -268,6 +270,7 @@ hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit")) -- dwindle only
 hl.bind(mainMod .. " + F", hl.dsp.window.fullscreen())
 -- Screenshots
+hl.bind(mainMod .. " + W", hl.dsp.exec_cmd("~/.config/hypr/scripts/wallpaper-toggle.sh"))
 hl.bind(mainMod .. " + CTRL + 1", hl.dsp.exec_cmd("hyprshot -m output"))
 hl.bind(mainMod .. " + CTRL + 2", hl.dsp.exec_cmd("hyprshot -m region"))
 hl.bind(mainMod .. " + CTRL + 3", hl.dsp.exec_cmd("hyprshot -m window"))

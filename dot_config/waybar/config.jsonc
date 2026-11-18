@@ -5,20 +5,20 @@
     "spacing": 4,
 
     "modules-left": [
-        "clock"
+        "hyprland/workspaces"
     ],
     "modules-center": [
-        "hyprland/workspaces"
+        
     ],
     "modules-right": [
         "pulseaudio",
         "backlight",
-        "battery"
+        "battery",
+        "clock"
     ],
 
     "clock": {
-      "format": "{:%H:%M}",
-      "format-alt": "{:%Y-%m-%d %H:%M:%S}",
+      "format": "{:%Y-%m-%d %H:%M:%S}",
       "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
 
